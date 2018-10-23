@@ -14,9 +14,9 @@ import java.util.List;
 import cn.pku.edu.sandy.bean.City;
 import cn.pku.edu.sandy.db.CityDB;
 
-public class MyApplication extends Application {
-private static  final  String TAG ="MyAPP";
-    private CityDB mCityDB;
+    public class MyApplication extends Application {
+        private static  final  String TAG ="MyAPP";
+        private CityDB mCityDB;
     private List<City> mCityList;
     private static MyApplication mApplication;
  @Override
