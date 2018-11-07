@@ -6,9 +6,11 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,13 +35,19 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private static final int UPDATE_TODAY_WEATHER = 1;
     private ImageView mUpdateBtn;
     private  ImageView mCitySelect;
+    private ProgressBar mcirclebar;
     private TextView cityTv, timeTv, humidityTv, weekTv, pmDataTv, pmQualityTv, temperatureTv, climateTv, windTv, city_name_Tv;
     private ImageView weatherImg, pmImg;
+    private  String newCityCode;
+    private  String cityCode;
+
     private Handler mHandler = new Handler() {
         public void handleMessage(android.os.Message msg) {
             switch (msg.what) {
                 case UPDATE_TODAY_WEATHER:
-                    updateTodayWeather((TodayWeather) msg.obj);
+                {   mcirclebar.setVisibility(View.INVISIBLE);//设置进度条不可见
+                    mUpdateBtn.setVisibility(View.VISIBLE);//设置更新图标可见
+                    updateTodayWeather((TodayWeather) msg.obj);}
                     break;
                 default:
                     break;
@@ -51,7 +59,9 @@ public class MainActivity extends Activity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.weather_info);
         mUpdateBtn = (ImageView) findViewById(R.id.title_update_btn);
+        mcirclebar = (ProgressBar)findViewById(R.id.circle_bar);
         mUpdateBtn.setOnClickListener(this);
+
         if (NetUtil.getNetworkState(this) != NetUtil.NETWORN_NONE) {
             Log.d("myWeather", "网络OK");
             Toast.makeText(MainActivity.this,"网络OK！", Toast.LENGTH_LONG).show();
@@ -62,7 +72,9 @@ public class MainActivity extends Activity implements View.OnClickListener {
         }
         mCitySelect =(ImageView)findViewById(R.id.title_city_manager);
         mCitySelect.setOnClickListener(this);
+
         initView();
+
     }
     @Override
     public void onClick(View view) {
@@ -71,10 +83,16 @@ public class MainActivity extends Activity implements View.OnClickListener {
            // startActivity(i);
             startActivityForResult(i,1);
         }
-        if (view.getId() == R.id.title_update_btn){
-            SharedPreferences sharedPreferences = getSharedPreferences("config", MODE_PRIVATE);
-            String cityCode = sharedPreferences.getString("main_ city_code","101010100");
+        Intent intent=getIntent();
 
+        if (view.getId() == R.id.title_update_btn){
+            mcirclebar.setVisibility(View.VISIBLE);//设置进度条可见
+            mUpdateBtn.setVisibility(View.INVISIBLE);//设置更新图标不可见
+            SharedPreferences sharedPreferences = getSharedPreferences("config", MODE_PRIVATE);
+            if( TextUtils.isEmpty(newCityCode))
+                cityCode = sharedPreferences.getString("main_ city_code","101010100");
+            else
+               cityCode = sharedPreferences.getString("main_ city_code",newCityCode);
             Log.d("myWeather",cityCode);
             if (NetUtil.getNetworkState(this) != NetUtil.NETWORN_NONE) {
                 Log.d("myWeather", "网络OK");
@@ -88,7 +106,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     }
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 1 && resultCode == RESULT_OK) {
-            String newCityCode= data.getStringExtra("cityCode");
+            newCityCode= data.getStringExtra("cityCode");
             Log.d("myWeather", "选择的城市代码为"+newCityCode);
             if (NetUtil.getNetworkState(this) != NetUtil.NETWORN_NONE) {
                 Log.d("myWeather", "网络OK");
@@ -272,6 +290,7 @@ return todayWeather;
         temperatureTv.setText(todayWeather.getHigh()+"~"+todayWeather.getLow());
         climateTv.setText(todayWeather.getType());
         windTv.setText("风力:"+todayWeather.getFengli());
+
         Toast.makeText(MainActivity.this,"更新成功！",Toast.LENGTH_SHORT).show();
     }
 

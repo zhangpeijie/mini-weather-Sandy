@@ -3,17 +3,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <RelativeLayout
+        android:id="@id/title"
         android:layout_width="fill_parent"
         android:layout_height="45.0dip"
         android:background="#ffcd2626" >
+
+
         <TextView
             android:id="@+id/title_name"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:gravity="center"
-            android:text="当前城市：北京"
             android:textColor="#ffffffff"
             android:textSize="20.0dip" />
+
         <ImageView
             android:id="@+id/title_back"
             android:layout_width="45.0dip"
@@ -30,5 +33,37 @@
             android:layout_toRightOf="@id/title_back"
             android:background="#A71717"
             android:gravity="center" />
-    </RelativeLayout>
+
+        </RelativeLayout>
+    <LinearLayout
+        android:layout_below="@id/title"
+        android:paddingTop="10dp"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/select"
+        >
+
+        <SearchView
+            android:id="@+id/searchView"
+            android:layout_marginLeft="8dip"
+            android:layout_marginRight="8dip"
+            android:lines="1"
+            android:background="@drawable/edittext"
+            android:layout_width="match_parent"
+            android:layout_height="45.0dip"
+            android:iconifiedByDefault="false"
+            android:queryHint="输入城市搜索"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/select">
+        <ListView
+            android:id="@+id/list_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"></ListView>
+    </LinearLayout>
 </RelativeLayout>

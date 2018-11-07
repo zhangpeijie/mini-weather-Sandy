@@ -40,6 +40,16 @@
             android:layout_gravity="center"
             android:src="@drawable/title_update"
             android:visibility="visible" />
+        <ProgressBar
+            android:id="@+id/circle_bar"
+            android:layout_alignParentRight="true"
+            android:paddingRight="13dip"
+            android:paddingTop="8dip"
+            android:layout_width="36.0dip"
+            android:layout_height="36.0dip"
+            android:gravity="center_vertical"
+            android:visibility="invisible"
+            android:indeterminateTint="#ffffffff"/>
         <ImageView
             android:id="@+id/title_share"
             android:layout_width="45.0dip"
@@ -103,8 +113,6 @@
         android:text="湿度:57%"
         android:textColor="@android:color/white"
         android:textSize="15.0sp" />
-    3.制作今日天气界面
-    57
     <!-- PM2.5整体信息块 -->
     <LinearLayout
         android:id="@+id/pm2_5_content"
